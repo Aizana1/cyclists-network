@@ -1,0 +1,41 @@
+<section id="vision">
+  <div class="content">
+    <button class="sortButton">Сортировать по оценкам (по убыванию)</button>
+    {{#each maps}}
+    <a href="/map/{{id}}">
+      <h2>{{this.name}}</h2>
+    </a>
+      <p>
+      <h4>Длина маршрута в км:
+        {{this.length}}
+      </h4>
+      </p>
+
+      <p>
+      <h4>Оценка:
+        {{this.rating}}
+      </h4>
+      </p>
+      <p>
+      <h5>{{this.locality}}</h5>
+      </p>
+      {{/each}}
+  </div>
+</section>
+</main>
+
+
+<script>
+  let mainContainer = document.querySelector('.content')
+  let btn = document.querySelector('.sortButton')
+  btn.addEventListener('click', async (e) => {
+    e.preventDefault()
+    const response = await fetch('/sort')
+    let result = await response.text()
+    result = result.match(/<ul([\s\S]*)<\/ul>/gm)[0]
+    mainContainer.lastElementChild.remove();
+    mainContainer.insertAdjacentHTML('beforeend', result)
+  })
+
+
+</script>

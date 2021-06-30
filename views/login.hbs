@@ -1,0 +1,21 @@
+<div class="container row">
+  <div class="jumbotron col-sm-4 pull-center">
+
+    <form action="/login" method="post">
+      {{#if message}}
+        <p>{{message}}</p><br>
+      {{/if}}
+      <div>
+        <label>Username:</label>
+        <input type="text" name="username" required/>
+      </div>
+      <div>
+        <label>Password:</label>
+        <input type="password" name="password" required/>
+      </div>
+      <div style="margin-top: 10px;">
+        <input class="btn btn-primary" type="submit" value="Log In" />
+      </div>
+    </form>
+  </div>
+</div>

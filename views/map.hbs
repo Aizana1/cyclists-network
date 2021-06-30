@@ -1,0 +1,130 @@
+{{!-- Подключение API карт Яндекса --}}
+<script src="https://api-maps.yandex.ru/2.1/?apikey=92bb75b6-bfb4-4983-b903-c9d3718acb57&lang=ru_RU" type="text/javascript"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="stylesheets/style.css">
+<style>
+  body{
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+  }
+</style>
+<h1>Маршрут: {{map.name}}</h1>
+<h4>Средняя оценка: {{srRating}} (всего оценок: {{kolOcenok}})</h4>
+
+{{!-- Блок для карты --}}
+<div id="map" style="width: 600px; height: 400px"></div>
+
+{{!-- Отзывы --}}
+<div id="comments-container">
+  {{#if user}}
+    <form id="newreview" style="margin: 40px 0px;" action="newreview" method="POST" data-id="{{map._id}}">
+      <textarea required style="width: 400px;" name="content" placeholder="Вы авторизованы, поэтому тут может быть ваш отзыв о маршруте"></textarea><br>
+      <label>Оценка маршрута от 0 до 5</label>
+      <input required type="number" name="rating" min="0" max="5" step="1"/><br>
+      <button type="submit">Оставить отзыв</button>
+    </form>
+  {{/if}}
+
+  <label>Отзывы:</label>
+  {{#each reviews}}
+<div> {{this.author}}</div>
+<div class='review' style="width: 60vw; padding: 20px">
+  <p class="reviewContent">
+        {{this.content}}
+      </p>
+    </div>
+  {{/each}}
+</div>
+
+{{!-- Скрипт, который создает карту, добавляет на страницу и управляет кликами по карте --}}
+<script ype="text/javascript">
+
+  function init () {
+    // Создаем карту с добавленной на нее кнопкой.
+    var myMap = new ymaps.Map('map', {
+        center: [59.943818, 30.360437],
+        zoom: 17,
+    });
+
+    const coords = [[{{point1}}], [{{point2}}]]
+    console.log(coords)
+    const multiRoute = createRoute(coords);
+    myMap.geoObjects.add(multiRoute);
+  }
+
+  function createRoute(coords) {
+    return new ymaps.multiRouter.MultiRoute({
+      referencePoints: coords,
+      params: {
+          routingMode: 'bicycle'
+      }
+    }, {
+        // Тип промежуточных точек, которые могут быть добавлены при редактировании.
+        editorMidPointsType: "via",
+        // В режиме добавления новых путевых точек запрещаем ставить точки поверх объектов карты.
+        editorDrawOver: false
+    });
+  }
+  
+  ymaps.ready(init);
+
+        const formreview = document.querySelector("#newreview");
+  if(formreview) {
+    formreview.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const { content, rating, method, action } = e.target
+      const { id } = e.target.dataset
+      const data = {
+        review: content.value, 
+        mapID: id,
+        rating: rating.value
+      }
+     // console.log(data)
+      const response = await fetch(action, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data ),
+      })
+      const result = await response.json()
+      console.log(result)
+      let div = document.createElement('div')
+      div.className = 'review'
+      document.body.appendChild(div)
+      let newP = document.createElement('p')
+      newP.className = 'reviewContent'
+      newP.innerHTML = data.review
+      div.appendChild(newP)
+
+    })
+      }
+</script>
+{{!--
+<script>
+
+  document.forms.newreview.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    const {
+      action,
+      method,
+      content: { value: messageValue }
+    } = event.target;
+    console.log(messageValue)
+    const response = await fetch(action, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messageValue }),
+    });
+    const result = await response.json()
+    console.log(result)
+
+    let div = document.createElement('div')
+    div.className = 'review'
+    document.body.appendChild(div)
+    let newP = document.createElement('p')
+    newP.className = 'reviewContent'
+    newP.innerHTML = result
+    div.appendChild(newP)
+    })
+
+
+</script> --}}

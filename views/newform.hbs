@@ -1,0 +1,109 @@
+{{!-- Подключение API карт Яндекса --}}
+<script src="https://api-maps.yandex.ru/2.1/?apikey=92bb75b6-bfb4-4983-b903-c9d3718acb57&lang=ru_RU" type="text/javascript"></script>
+
+{{!-- Форма для данных о маршруте --}}
+<form name="newform" action="/map" method="POST">
+    Новый маршрут:<br>
+    <input type= "text" name= "name" required placeholder= "Название маршрута"></input><br>
+    <input type= "text" name= "length" placeholder= "Длина маршрута"></input><br>
+    <input type= "text" name= "locality" required placeholder= "Населенный пункт"></input><br>
+    <textarea type= "text" name= "description" required placeholder= "Описание"></textarea><br>
+    <label>Оценка маршрута</label><br><input type= "number" min="0" max="5" name= "rating"></input><br>
+    <br>
+    <button>Добавить маршрут</button>
+</form>
+
+
+{{!-- Блок для карты --}}
+<div id="map" style="width: 600px; height: 400px"></div>
+<button id="clearmap"> Очистить карту</button>
+
+{{!-- Скрипт, который создает карту, добавляет на страницу и управляет кликами по карте --}}
+<script type="text/javascript">
+
+
+  
+function createRoute(coords) {
+  return new ymaps.multiRouter.MultiRoute({
+    referencePoints: coords,
+    params: {
+        routingMode: 'bicycle'
+    }
+  }, {
+      // Тип промежуточных точек, которые могут быть добавлены при редактировании.
+      editorMidPointsType: "via",
+      // В режиме добавления новых путевых точек запрещаем ставить точки поверх объектов карты.
+      editorDrawOver: false
+  });
+}
+
+function init () {
+    
+    const routecoords = []
+
+    // Создаем карту с добавленной на нее кнопкой.
+    var myMap = new ymaps.Map('map', {
+        center: [59.943818, 30.360437],
+        zoom: 17,
+    }, {
+        buttonMaxWidth: 300,
+        //searchControlProvider: 'yandex#search'
+    });
+
+    myMap.events.add('click',  function (e) {
+      let coords = e.get('coords');
+      routecoords.push(coords)
+      myMap.geoObjects.removeAll();
+      const route = createRoute(routecoords)
+      myMap.geoObjects.add(route);
+      console.log(routecoords)
+    })
+
+    const startCoords = [[59.943818, 30.360437], [59.944548, 30.360002]]
+    const multiRoute = createRoute([]);
+    myMap.geoObjects.add(multiRoute);
+
+
+
+    document.forms.newform.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      if(routecoords.length < 2) {
+        return alert('Маршрут маленький, как твой ...');
+      }
+
+      const {name, length, locality, author, rating, action, method, description} = e.target
+
+      if(!name.value || !length.value || !locality.value || !description.value || !rating.value) {
+        return alert("Что-то не заполнили");
+      }
+
+      const data = {
+        name: name.value,
+        length: length.value || "Нормально, потянешь...",
+        locality: locality.value || "Где - то",
+        rating: rating.value,
+        coords: routecoords,
+        description: description.value
+      }
+      const response = await fetch(action, {
+        method,
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(data), 
+      });
+
+      //const result = await response.json();
+      
+      if(response.status === 201) {
+        alert("Маршрут успешно добавлен");   
+      }
+      
+    })
+    document.getElementById("clearmap").addEventListener("click", (e) => {
+      routecoords.length = 0
+      myMap.geoObjects.removeAll();
+    })
+}
+
+ymaps.ready(init);
+</script>
