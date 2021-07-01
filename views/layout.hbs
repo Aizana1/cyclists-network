@@ -2,11 +2,12 @@
 <html>
 
 <head>
-   <meta charset="UTF-8">
+  <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Велосипедная соц сеть</title>
-  <link rel="stylesheet" href="static/css/style.css" type = "text/css">
+  <link rel="stylesheet" href="/public/css/style.css" type="text/css">
+  <script defer src="/public/index.js"></script>
 </head>
 <div class="hero" id="top">
   <div class="hero-image"></div>
@@ -22,9 +23,16 @@
         <li><a href="/dashboard">
             <p>My Dashboard</p>
           </a></li>
-
       </ul>
+
+           {{#if name}}
       <ul class="right">
+        <li><a href="/logout">
+            <p>Log Out</p>
+          </a></li>
+      </ul>
+      {{else}}
+ <ul class="right">
         <li><a href="/login">
             <p>Log in</p>
           </a></li>
@@ -32,6 +40,8 @@
             <p>Sign up</p>
           </a></li>
       </ul>
+      {{/if}}
+
     </div>
   </nav>
 </div>

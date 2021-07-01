@@ -22,10 +22,14 @@ function transformMapRating(maps) {
     return el;
   });
 }
-// при переходе на "корень", запускается функция sessionChecker
-router.get("/", async (req, res) => {
+
+router.get("/",  async (req, res) => {
   let maps = await getMaps();
   maps = transformMapRating(maps)
+  if (req.session.user) {
+    const { user } = req.session
+    return res.render ('landing', { name: user.username, maps })
+  }
   return res.render("landing", { maps });
 });
 
