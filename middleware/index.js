@@ -1,21 +1,20 @@
 module.exports= function(app){
-
 const express= require('express')
-// const morgan = require('morgan')
 const cookieParser = require("cookie-parser")
-
 const session = require("express-session")
 const path = require("path")
-
 const FileStore = require("session-file-store")(session)
 
 const { cookiesCleaner } = require("./auth")
-  const dbConnection = require("./db-connect")
+const dbConnection = require("./db-connect")
 
-// app.use(morgan("dev"))
-
+//app.use(express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+
+app.set("views", path.join(__dirname, '..', "views"))
+app.set("view engine", "hbs")
+app.use('/static', express.static('public'));
 
 app.use(cookieParser())
 
@@ -34,9 +33,9 @@ app.use(
 )
 
 app.use(cookiesCleaner)
-app.use(express.static(path.join(__dirname, '..', "public")))
 
-app.set("views", path.join(__dirname, '..', "views"))
-app.set("view engine", "hbs")
+// app.use(express.static(path.join(__dirname, '..', "/public")))
+
+
 
 }

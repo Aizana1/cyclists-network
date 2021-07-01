@@ -2,22 +2,23 @@
 <script src="https://api-maps.yandex.ru/2.1/?apikey=92bb75b6-bfb4-4983-b903-c9d3718acb57&lang=ru_RU" type="text/javascript"></script>
 
 {{!-- Форма для данных о маршруте --}}
+<div class="form">
 <form name="newform" action="/map" method="POST">
-    Новый маршрут:<br>
+   <label style="font-weight: bold;">Новый маршрут:</label> <br>
     <input type= "text" name= "name" required placeholder= "Название маршрута"></input><br>
     <input type= "text" name= "length" placeholder= "Длина маршрута"></input><br>
     <input type= "text" name= "locality" required placeholder= "Населенный пункт"></input><br>
-    <textarea type= "text" name= "description" required placeholder= "Описание"></textarea><br>
+    <input type= "text" name= "description" required placeholder= "Описание"></input><br>
     <label>Оценка маршрута</label><br><input type= "number" min="0" max="5" name= "rating"></input><br>
     <br>
-    <button>Добавить маршрут</button>
+    <button class="routeButton">Добавить маршрут</button>
 </form>
 
 
 {{!-- Блок для карты --}}
 <div id="map" style="width: 600px; height: 400px"></div>
-<button id="clearmap"> Очистить карту</button>
-
+<button id="clearmap" class="routeButton"> Очистить карту</button>
+</div>
 {{!-- Скрипт, который создает карту, добавляет на страницу и управляет кликами по карте --}}
 <script type="text/javascript">
 
@@ -69,7 +70,7 @@ function init () {
       e.preventDefault();
 
       if(routecoords.length < 2) {
-        return alert('Маршрут маленький, как твой ...');
+        return alert('Маршрут маленький');
       }
 
       const {name, length, locality, author, rating, action, method, description} = e.target

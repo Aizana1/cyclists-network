@@ -1,21 +1,22 @@
 {
   "name": "contract-project-cycling",
   "version": "1.0.0",
-  "description": "## Звонок от заказчика",
+  "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js",
     "dev": "nodemon server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/soulfeelings/contract-project-cycling.git"
+    "url": "git+https://github.com/Aizana1/cyclists-network"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/soulfeelings/contract-project-cycling/issues"
+    "url": "https://github.com/Aizana1/cyclists-network/issues"
   },
-  "homepage": "https://github.com/soulfeelings/contract-project-cycling#readme",
+  "homepage": "https://github.com/Aizana1/cyclists-network#readme",
   "devDependencies": {
     "nodemon": "^2.0.7"
   },
