@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap');
+
 body {
   word-break: break-word;
 }
@@ -135,53 +137,15 @@ p {
   .sortButton {
     float:right;
   }
-  .button {
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    height: 25px;
-  }
+
   .form {
-    width: 300px;
+    width: 200px;
     padding: 15px;
     margin: 5px 0 22px 50px;
     display: inline-block;
     border: none;
-    /* background: #f1f1f1; */
+    background: #f1f1f1;
   }
-  input[type=text], input[type=number], input[type=password] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-  
-  .routeButton {
-    width: 100%;
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .routeButton:hover {
-    background-color: #45a049;
-  }
-  
-  div {
-    border-radius: 5px;
-    padding: 20px;
-  }
+#routes-container {
+  margin: 30px
+}

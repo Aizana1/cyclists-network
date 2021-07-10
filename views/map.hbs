@@ -1,13 +1,12 @@
 {{!-- Подключение API карт Яндекса --}}
 <script src="https://api-maps.yandex.ru/2.1/?apikey=92bb75b6-bfb4-4983-b903-c9d3718acb57&lang=ru_RU" type="text/javascript"></script>
-  {{!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> --}}
-  {{!-- <link rel="stylesheet" href="../static/css/style.css"> --}}
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="stylesheets/style.css">
 <style>
   body{
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
   }
 </style>
-<div class="form">
 <h1>Маршрут: {{map.name}}</h1>
 <h4>Средняя оценка: {{srRating}} (всего оценок: {{kolOcenok}})</h4>
 
@@ -25,7 +24,7 @@
     </form>
   {{/if}}
 
-  <label><h3>Отзывы:</h3></label>
+  <label>Отзывы:</label>
   {{#each reviews}}
 <div> {{this.author}}</div>
 <div class='review' style="width: 60vw; padding: 20px">
@@ -35,7 +34,7 @@
     </div>
   {{/each}}
 </div>
-</div>
+
 {{!-- Скрипт, который создает карту, добавляет на страницу и управляет кликами по карте --}}
 <script ype="text/javascript">
 
@@ -47,7 +46,7 @@
     });
 
     const coords = [[{{point1}}], [{{point2}}]]
-    //console.log(coords)
+    console.log(coords)
     const multiRoute = createRoute(coords);
     myMap.geoObjects.add(multiRoute);
   }

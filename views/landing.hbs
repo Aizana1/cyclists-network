@@ -1,25 +1,39 @@
-<section id="vision">
-  <div class="content">
-    <button class="sortButton">Сортировать по оценкам (по убыванию)</button>
+<main id="routes-container" role="main">
+  <button class = "sortButton">Сортировать по оценкам (по убыванию)</button>
+  <ul id="routes-list" class="entries-list no-bullets no-padding">
     {{#each maps}}
-    <a href="/map/{{id}}">
-      <h2>{{this.name}}</h2>
-    </a>
-      <p>
-      <h4>Длина маршрута в км:
-        {{this.length}}
-      </h4>
-      </p>
-
-      <p>
-      <h4>Оценка:
-        {{this.rating}}
-      </h4>
-      </p>
-      <p>
-      <h5>{{this.locality}}</h5>
-      </p>
-      {{/each}}
-  </div>
-</section>
+      <li class="entry-item pad-b-4">
+        <a href="/map/{{id}}" class="entry-title font-2 pad-b-1-4 c-white">
+          <h2>{{this.name}}</h2>
+        </a>
+        <span class="entry-date block font-3-4 c-lt-gray">
+          <h4>Длина маршрута в км:
+            {{this.length}}
+          </h4>
+        </span>
+        <span class="entry-date block font-3-4 c-lt-gray">
+          <h4>Оценка: 
+            {{this.rating}}
+          </h4>
+        </span>
+        <p class="entry-stub">
+          <h5>{{this.locality}}</h5>
+        </p>
+      </li>
+    {{/each}}
+  </ul>
 </main>
+<script>
+  let mainContainer = document.getElementById('routes-container')
+  let btn = document.querySelector('.sortButton')
+  btn.addEventListener ('click', async (e) => {
+    e.preventDefault()
+    const response = await fetch('/sort')
+    let result = await response.text()
+    result = result.match(/<ul([\s\S]*)<\/ul>/gm)[0]
+    mainContainer.lastElementChild.remove();
+    mainContainer.insertAdjacentHTML('beforeend', result)
+  })
+
+
+</script>

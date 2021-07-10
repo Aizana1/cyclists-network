@@ -7,6 +7,7 @@ const Review = require("../models/review");
 router
   .route("/")
   .get((req, res) => {
+    console.log("oiuytrdsdcvb");
     //const map = await Map.find()
     //res.json(users)
     res.redirect("map/:id");
@@ -25,6 +26,7 @@ router
   });
 
 
+/* Роут для отрисовки странички маршрута по айди */
 router.get("/:id", async (req, res) => {
   const { user } = req.session;
   const mapID = req.params.id
@@ -40,6 +42,7 @@ router.get("/:id", async (req, res) => {
 });
 
 
+/* Роут, для добавления отзыва к маршруту */
 router.post("/newreview", async (req, res) => {
   console.log("OK")
   const { review, mapID, rating } = req.body;
@@ -48,12 +51,14 @@ router.post("/newreview", async (req, res) => {
     map: mapID,
     author: req.session.user._id
   };
+  //console.log(data)
   const updatedmap = await Map.updateOne(
     {_id: mapID},
     { $push: {rating: rating}}
   )
   const reviewdoc = await Review.create(data);
   if (reviewdoc) {
+   // console.log(updatedmap, reviewdoc)
     res.status(201).json({ message: 1, data});
   }
 });
